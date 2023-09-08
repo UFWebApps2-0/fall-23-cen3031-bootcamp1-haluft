@@ -10,7 +10,6 @@ var requestHandler = function(request, response) {
     You will need to use several of its properties: url and method
   */
   //console.log(request);
-
   /*
     Your request handler should send listingData in the JSON format as a response if a GET request 
     is sent to the '/listings' path. Otherwise, it should send a 404 error. 
@@ -29,6 +28,17 @@ var requestHandler = function(request, response) {
     Helpful example: if-else structure- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else
 
     */
+    if(request.url === '/listings'){ //if you put in http://localhost:8080/listings this pops up
+		response.writeHead(200, {"Content-Type": "text/html"});
+    	response.write(listingData);
+    	response.end();
+    }
+    else{
+    	response.writeHead(404, {"Content-Type": "text/html"});
+    	response.write("Bad Gateway Error");
+    	response.end();
+    }
+    
 };
 
 fs.readFile('listings.json', 'utf8', function(err, data) {
@@ -42,19 +52,22 @@ fs.readFile('listings.json', 'utf8', function(err, data) {
     HINT: Read up on JSON parsing Node.js
     http://stackoverflow.com/questions/17251553/nodejs-request-object-documentation
    */
-
+   
     //Check for errors
     /*this resource gives you an idea of the general format err objects and Throwing an existing object.
     https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/throw#throwing_an_existing_object
    */
-  
+  	if(err) throw err; 
 
    //Save the data in the listingData variable already defined
-  
+  listingData=data;
 
   //Creates the server
+  server = http.createServer(requestHandler);
   
   //Start the server
-
+  server.listen(port, () => {
+     console.log('Server running at http://localhost:8080');
+  });
 
 });
