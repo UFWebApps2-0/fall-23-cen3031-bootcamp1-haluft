@@ -30,12 +30,13 @@ var requestHandler = function(request, response) {
     */
     if(request.url === '/listings'){ //if you put in http://localhost:8080/listings this pops up
 		response.writeHead(200, {"Content-Type": "text/html"});
+    	//response.write(JSON.stringify(listingData));
     	response.write(listingData);
     	response.end();
     }
     else{
     	response.writeHead(404, {"Content-Type": "text/html"});
-    	response.write("Bad Gateway Error");
+    	response.write("Not Found");
     	response.end();
     }
     
@@ -57,7 +58,7 @@ fs.readFile('listings.json', 'utf8', function(err, data) {
     /*this resource gives you an idea of the general format err objects and Throwing an existing object.
     https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/throw#throwing_an_existing_object
    */
-  	if(err) throw err; 
+  if(err) throw err; 
 
    //Save the data in the listingData variable already defined
   listingData=data;
